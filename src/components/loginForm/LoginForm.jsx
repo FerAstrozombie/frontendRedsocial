@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from "yup";
+import { User } from "../../models/user.class.js";
+import { login } from "../../services/axiosCrudServices.js";
 
 const loginSchema = Yup.object().shape(
     {
@@ -11,9 +13,11 @@ const loginSchema = Yup.object().shape(
     }
 )
 
-const LoginForm = () => {
-
+const LoginForm = ({setToken}) => {
+    
     const navigate = useNavigate();
+
+    let user = new User;
 
     const initialCredentials = {
         email: "",
@@ -28,7 +32,12 @@ const LoginForm = () => {
                 validationSchema={loginSchema}
                 onSubmit={async (values) => {
                     await new Promise((r) => setTimeout(r, 1000));
-                    alert(JSON.stringify(values, null, 2));
+                    user.email = values.email;
+                    user.password = values.password;
+                    user.repassword = values.password;
+                    const response = await login(user.email, user.password, user.repassword);
+                    const data =JSON.stringify(response.data.token);
+                    setToken = {data}
                     navigate("/profile")
                 }}
             >

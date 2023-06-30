@@ -1,9 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { User } from "../../models/user.class.js";
+import { createUser } from "../../services/axiosCrudServices.js";
 
 
 const RegisterForm = () => {
+
+    let user = new User;
 
     const navigate = useNavigate();
 
@@ -39,8 +43,11 @@ const RegisterForm = () => {
                 initialValues={initialValues}
                 validationSchema={registerSchema}
                 onSubmit={async (values) => {
-                    await new Promise((resolve) => setTimeout(resolve, 1000));
-                    alert(JSON.stringify(values, null, 2));
+                    user.email = values.email;
+                    user.password = values.password;
+                    user.repassword = values.password;
+                    const response = await createUser(user.email, user.password, user.repassword);
+                    console.log(response.data.token);
                     navigate("/login")  ;                
                 }}
             >
