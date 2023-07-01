@@ -3,19 +3,23 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from "yup";
 import { User } from "../../models/user.class.js";
 import { login } from "../../services/axiosCrudServices.js";
+import { useContext } from "react";
+import AuthContex from "../../context/AuthContext.jsx";
 
 const loginSchema = Yup.object().shape(
     {
         email: Yup.string()
             .email("Invalid email format")
             .required("Email is required"),
-        password: Yup.string().required("Password is required")
+        password: Yup.string().min(6, "Password to short").required("Password is required")
     }
 )
 
-const LoginForm = ({setToken}) => {
+const LoginForm = () => {
     
     const navigate = useNavigate();
+
+    const { token, setToken } = useContext(AuthContex);
 
     let user = new User;
 
@@ -36,9 +40,14 @@ const LoginForm = ({setToken}) => {
                     user.password = values.password;
                     user.repassword = values.password;
                     const response = await login(user.email, user.password, user.repassword);
-                    const data =JSON.stringify(response.data.token);
-                    setToken = {data}
-                    navigate("/profile")
+                    if(response.status === 200){
+                        setToken(response.data.token)
+                        navigate("/profile")
+                        console.log(token);
+                    }
+                    if(response.error){
+                        alert(JSON.stringify(response) )
+                    }
                 }}
             >
                 {({ errors, touched, isSubmitting }) => (
