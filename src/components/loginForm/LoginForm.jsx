@@ -19,7 +19,7 @@ const LoginForm = () => {
     
     const navigate = useNavigate();
 
-    const { token, setToken } = useContext(AuthContex);
+    const { token, setToken, setExpiresIn, expiresIn } = useContext(AuthContex);
 
     let user = new User;
 
@@ -35,15 +35,16 @@ const LoginForm = () => {
                 initialValues={initialCredentials}
                 validationSchema={loginSchema}
                 onSubmit={async (values) => {
-                    await new Promise((r) => setTimeout(r, 1000));
+                    await new Promise((r) => setTimeout(r, 2000));
                     user.email = values.email;
                     user.password = values.password;
                     user.repassword = values.password;
                     const response = await login(user.email, user.password, user.repassword);
                     if(response.status === 200){
-                        setToken(response.data.token)
-                        navigate("/profile")
-                        console.log(token);
+                        setToken(response.data.token);
+                        setExpiresIn(response.data.expiresIn);
+                        console.log(token, expiresIn);
+                        navigate("/publicaciones")
                     }
                     if(response.error){
                         alert(JSON.stringify(response) )
@@ -74,7 +75,8 @@ const LoginForm = () => {
                             )
                         }
                         <button type="submit">Submit</button>
-                        {isSubmitting ? (<p>Login your credentials...</p>) : null}
+                        <h4>No tienes una cuenta?...<a href="/register">Registrarme</a></h4>
+                        {isSubmitting ? (<p>Logueando...</p>) : null}
                     </Form>
                 )}
             </Formik>

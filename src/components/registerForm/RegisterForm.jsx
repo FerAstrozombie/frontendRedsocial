@@ -12,27 +12,43 @@ const RegisterForm = () => {
     const navigate = useNavigate();
 
     const initialValues = {
+        nombre: "",
+        apellido: "",
+        telefono: "",
         email: "",
         password: "",
         confirm: "",
     }
 
+    const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+
     const registerSchema = Yup.object().shape(
         {
+            nombre: Yup.string()
+                .min(4, "Nombre demsiado corto")
+                .required("El nombre es requerido"),
+            apellido: Yup.string()
+                .min(4, "Nombre demsiado corto")
+                .required("El nombre es requerido"),
+            telefono: Yup.string()
+                .required("El telefono es requerido")
+                .matches(phoneRegExp, 'El numero de telefono es invalido')
+                .min(10, "Nro de telefono demasiado corto")
+                .max(10, "Nro de telefono demasiado largo"),
             email: Yup.string()
-                .email("Invalid email format")
-                .required("Email is required"),
+                .email("Formato invalido de email")
+                .required("El email es requerido"),
             password: Yup.string()
-                .min(6, "Password to short")
-                .required("Password is required"),
+                .min(6, "Contraseña muy corta")
+                .required("La contraseña es requerida"),
             confirm: Yup.string()
                 .when("password", {
                     is: value => (value && value.length > 0 ? true : false),
                     then: () => Yup.string().oneOf(
                         [Yup.ref("password")],
-                        "Password must match!"
+                        "Las constraseñas deben coincidir!"
                     )
-                }).required("You must confirm the password")
+                }).required("Tienes que confirmar tu contraseña")
         }
     )
 
@@ -43,16 +59,47 @@ const RegisterForm = () => {
                 initialValues={initialValues}
                 validationSchema={registerSchema}
                 onSubmit={async (values) => {
+                    user.nombre = values.nombre;
+                    user.apellido = values.apellido;
+                    user.telefono = values.telefono;
                     user.email = values.email;
                     user.password = values.password;
                     user.repassword = values.password;
-                    const response = await createUser(user.email, user.password, user.repassword);
-                    console.log(response.data.token);
-                    navigate("/login")  ;                
+                    const response = await createUser(user.nombre, user.apellido, user.telefono, user.email, user.password, user.repassword);
+                    if(response.status === 400) alert(JSON.stringify(response.data))
+                    navigate("/login");
                 }}
             >
                 {({ errors, touched, isSubmitting }) => (
                     <Form>
+
+                        <label htmlFor="nombre">Nombre</label>
+                        <Field id="nombre" type="text" name="nombre" placeholder="Nombre" />
+                        {
+                            errors.nombre && touched.nombre &&
+                            (
+                                <ErrorMessage name='nombre' component="div" />
+                            )
+                        }
+
+                        <label htmlFor="apellido">Apellido</label>
+                        <Field id="apellido" type="text" name="apellido" placeholder="Apellido" />
+                        {
+                            errors.apellido && touched.apellido &&
+                            (
+                                <ErrorMessage name='apellido' component="div" />
+                            )
+                        }
+
+                        <label htmlFor="telefono">Telefono</label>
+                        <Field id="telefono" type="phone" name="telefono" placeholder="Telefono" />
+                        {
+                            errors.telefono && touched.telefono &&
+                            (
+                                <ErrorMessage name='telefono' component="div" />
+                            )
+                        }
+
                         <label htmlFor="email">Email</label>
                         <Field id="email" type="email" name="email" placeholder="example@email.com" />
                         {
@@ -89,9 +136,9 @@ const RegisterForm = () => {
                                 <ErrorMessage name='confirm' component="div" />
                             )
                         }
-
-                        <button type="submit">Register account</button>
-                        {isSubmitting ? (<p>Sending your credentials...</p>) : null}
+                        <button type="submit">Registrar cuenta</button>
+                        <h4>Ya tienes una cuenta?...<a href="/login">Loguearme</a></h4>
+                        {isSubmitting ? (<p>Registrandote...</p>) : null}
 
                     </Form>
                 )}
