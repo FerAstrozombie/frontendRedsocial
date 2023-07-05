@@ -5,7 +5,7 @@ const NavBar = () => {
         <nav>
             <ul>
                 <li className="lista"><NavLink to={"/"}>Inicio</NavLink></li>
-                <li className="lista"><NavLink to={"/profile"}>Perfil</NavLink></li>   
+                <li className="lista"><NavLink to={"/profile"}>Perfil</NavLink></li>
             </ul>
         </nav>
     )

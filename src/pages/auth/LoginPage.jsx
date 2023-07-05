@@ -1,9 +1,9 @@
 import LoginForm from "../../components/loginForm/LoginForm";
 import { useContext, useEffect } from "react";
 import AuthContex from "../../context/AuthContext";
-import HomePage from "../home/HomePage";
 import { refresh } from "../../services/axiosCrudServices";
 import { useNavigate } from "react-router-dom";
+import Inicio from "../Inicio/Inicio";
 
 const LoginPage = () => {
 
@@ -28,7 +28,7 @@ const LoginPage = () => {
     });
 
     return (
-        token? <HomePage /> : <LoginForm />
+        token? <Inicio /> : <LoginForm />
     )
 }
 

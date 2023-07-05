@@ -5,7 +5,7 @@ import { getPublicaciones, refresh } from "../../services/axiosCrudServices";
 
 const InicioComponent = () => {
 
-    const { token, setToken, setExpiresIn, expiresIn } = useContext(AuthContex);
+    const { token, setToken, setExpiresIn } = useContext(AuthContex);
     const [publicaciones, setPublicaciones] = useState([]);
     const navigate = useNavigate();
 
@@ -28,7 +28,6 @@ const InicioComponent = () => {
     const obtenerData = async () => {
         if (token) {
             const data = await getPublicaciones(token);
-            console.log(data);
             return data
         }
     };
@@ -37,7 +36,6 @@ const InicioComponent = () => {
         obtenerData().then((res) => {
             if (res) {
                 const data = res.data.publicaciones
-                console.log(data);
                 setPublicaciones(data)
             }
         }).catch((error) => {
