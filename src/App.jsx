@@ -1,11 +1,11 @@
-import { BrowserRouter as Router, Route, Routes, Link, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import RegisterPage from "./pages/auth/RegisterPage";
 import LoginPage from "./pages/auth/LoginPage";
 import Profile from "./pages/profile/Profile";
 import NotFoundPage from "./pages/404/NotFoundPage";
 import { AuthProvider } from "./context/AuthContext";
 import Inicio from "./pages/Inicio/Inicio";
-import NavBar from "./components/NavBar/NavBar"
+import NavBar from "./components/NavBar/NavBar";
 
 function App() {
 

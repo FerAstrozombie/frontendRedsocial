@@ -1,8 +1,8 @@
 import RegisterForm from "../../components/registerForm/RegisterForm";
 import { useContext, useEffect } from "react";
 import AuthContex from "../../context/AuthContext";
-import HomePage from "../home/HomePage";
 import { refresh } from "../../services/axiosCrudServices";
+import Inicio from "../Inicio/Inicio";
 
 const RegisterPage = () => {
     const { token, setToken } = useContext(AuthContex);
@@ -23,7 +23,7 @@ const RegisterPage = () => {
     });
 
     return (
-        token ? <HomePage /> : <RegisterForm />
+        token ? <Inicio /> : <RegisterForm />
     )
 }
 

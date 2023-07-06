@@ -19,7 +19,7 @@ const LoginForm = () => {
     
     const navigate = useNavigate();
 
-    const { token, setToken, setExpiresIn, expiresIn } = useContext(AuthContex);
+    const { setToken, setExpiresIn } = useContext(AuthContex);
 
     let user = new User;
 
@@ -43,7 +43,6 @@ const LoginForm = () => {
                     if(response.status === 200){
                         setToken(response.data.token);
                         setExpiresIn(response.data.expiresIn);
-                        console.log(token, expiresIn);
                         navigate("/publicaciones")
                     }
                     if(response.error){
@@ -52,17 +51,18 @@ const LoginForm = () => {
                 }}
             >
                 {({ errors, touched, isSubmitting }) => (
-                    <Form>
+                    <Form className="formLogin">
                         <label htmlFor="email">Email</label>
-                        <Field id="email" type="email" name="email" placeholder="example@email.com" />
+                        <Field className="input" id="email" type="email" name="email" placeholder="example@email.com"/>
                         {
                             errors.email && touched.email &&
                             (
-                                <ErrorMessage name='email' component="div"/>
+                                <ErrorMessage name='email' component="div" className="errorLogin"/>
                             )
                         }
                         <label htmlFor="password">Password</label>
                         <Field
+                            className="input"
                             id="password"
                             name="password"
                             placeholder="password"
@@ -71,11 +71,11 @@ const LoginForm = () => {
                         {
                             errors.password && touched.password &&
                             (
-                                <ErrorMessage name='password' component="div"/>
+                                <ErrorMessage name='password' component="div" className="errorLogin"/>
                             )
                         }
-                        <button type="submit">Submit</button>
-                        <h4>No tienes una cuenta?...<a href="/register">Registrarme</a></h4>
+                        <button className="boton" type="submit">Login</button>
+                        <h4>No tienes una cuenta?...<a href="/register" className="loginLink">Registrate</a></h4>
                         {isSubmitting ? (<p>Logueando...</p>) : null}
                     </Form>
                 )}

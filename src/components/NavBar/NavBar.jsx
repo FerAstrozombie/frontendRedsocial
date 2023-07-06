@@ -1,13 +1,42 @@
 import { NavLink } from "react-router-dom";
+import { logout } from "../../services/axiosCrudServices";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import logo from '../../assets/logo.png';
 
 const NavBar = () => {
+    const navigate = useNavigate();
+
+    function cerrarCesion() {
+        logout()
+        navigate("/login")
+    }
+
+    const [menu, setMenu] = useState(false);
+    const toggleMenu = () => {
+        setMenu(!menu)
+    };
+
     return (
-        <nav>
-            <ul>
-                <li className="lista"><NavLink to={"/"}>Inicio</NavLink></li>
-                <li className="lista"><NavLink to={"/profile"}>Perfil</NavLink></li>
-            </ul>
-        </nav>
+        <div className="menu">
+            <NavLink to={"/"}>
+                <img src={logo} className="logo" alt="logo" />
+            </NavLink>
+            <button onClick={toggleMenu} className="cabeceraBoton">
+                <svg className="cabeceraSvg" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path fillRule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
+                </svg>
+            </button>
+            <nav className={`cabeceraNav ${menu ? "isActive" : ""}`}>
+                <ul className="cabeceraLista">
+                    <li className="lista"><NavLink className={"lista"} to={"/"}>Inicio</NavLink></li>
+                    <li className="lista"><NavLink className={"lista"} to={"/profile"}>Perfil</NavLink></li>
+                    <button className="cesion" onClick={() => cerrarCesion}>
+                        Cerrar Cesion
+                    </button>
+                </ul>
+            </nav>
+        </div>
     )
 }
 

@@ -66,78 +66,95 @@ const RegisterForm = () => {
                     user.password = values.password;
                     user.repassword = values.password;
                     const response = await createUser(user.nombre, user.apellido, user.telefono, user.email, user.password, user.repassword);
-                    if(response.status === 400) alert(JSON.stringify(response.data))
+                    if (response.status === 400) alert(JSON.stringify(response.data))
                     navigate("/login");
                 }}
             >
                 {({ errors, touched, isSubmitting }) => (
-                    <Form>
+                    <Form className="formLogin">
+                        <div className="registro">
+                            <div className="inputField">
+                                <label htmlFor="nombre">Nombre</label>
+                                <Field id="nombre" type="text" name="nombre" placeholder="Nombre" className="input" />
+                                {
+                                    errors.nombre && touched.nombre &&
+                                    (
+                                        <ErrorMessage name='nombre' component="div" className="error" />
+                                    )
+                                }
+                            </div>
+                            <div className="inputField">
+                                <label htmlFor="apellido">Apellido</label>
+                                <Field id="apellido" type="text" name="apellido" placeholder="Apellido" className="input" />
+                                {
+                                    errors.apellido && touched.apellido &&
+                                    (
+                                        <ErrorMessage name='apellido' component="div" className="error" />
+                                    )
+                                }
+                            </div>
+                        </div>
 
-                        <label htmlFor="nombre">Nombre</label>
-                        <Field id="nombre" type="text" name="nombre" placeholder="Nombre" />
-                        {
-                            errors.nombre && touched.nombre &&
-                            (
-                                <ErrorMessage name='nombre' component="div" />
-                            )
-                        }
+                        <div className="registro">
+                            <div className="inputField">
+                                <label htmlFor="telefono">Telefono</label>
+                                <Field id="telefono" type="phone" name="telefono" placeholder="Telefono" className="input" />
+                                {
+                                    errors.telefono && touched.telefono &&
+                                    (
+                                        <ErrorMessage name='telefono' component="div" className="error" />
+                                    )
+                                }
+                            </div>
+                            <div className="inputField">
+                                <label htmlFor="email">Email</label>
+                                <Field id="email" type="email" name="email" placeholder="example@email.com" className="input" />
+                                {
+                                    errors.email && touched.email &&
+                                    (
+                                        <ErrorMessage name='email' component="div" className="error" />
+                                    )
+                                }
+                            </div>
+                        </div>        
 
-                        <label htmlFor="apellido">Apellido</label>
-                        <Field id="apellido" type="text" name="apellido" placeholder="Apellido" />
-                        {
-                            errors.apellido && touched.apellido &&
-                            (
-                                <ErrorMessage name='apellido' component="div" />
-                            )
-                        }
+                        <div className="registro">
+                            <div className="inputField">
+                                <label htmlFor="password">Password</label>
+                                <Field
+                                    id="password"
+                                    name="password"
+                                    placeholder="password"
+                                    type="password"
+                                    className="input"
+                                />
+                                {
+                                    errors.password && touched.password &&
+                                    (
+                                        <ErrorMessage name='password' component="div" className="error" />
+                                    )
+                                }
+                            </div>
+                            <div className="inputField">
+                                <label htmlFor="confirm">Password</label>
+                                <Field
+                                    id="confirm"
+                                    name="confirm"
+                                    placeholder="Confirm password"
+                                    type="password"
+                                    className="input"
+                                />
+                                {
+                                    errors.confirm && touched.confirm &&
+                                    (
+                                        <ErrorMessage name='confirm' component="div" className="error" />
+                                    )
+                                }
+                            </div>
+                        </div>
 
-                        <label htmlFor="telefono">Telefono</label>
-                        <Field id="telefono" type="phone" name="telefono" placeholder="Telefono" />
-                        {
-                            errors.telefono && touched.telefono &&
-                            (
-                                <ErrorMessage name='telefono' component="div" />
-                            )
-                        }
-
-                        <label htmlFor="email">Email</label>
-                        <Field id="email" type="email" name="email" placeholder="example@email.com" />
-                        {
-                            errors.email && touched.email &&
-                            (
-                                <ErrorMessage name='email' component="div" />
-                            )
-                        }
-
-                        <label htmlFor="password">Password</label>
-                        <Field
-                            id="password"
-                            name="password"
-                            placeholder="password"
-                            type="password"
-                        />
-                        {
-                            errors.password && touched.password &&
-                            (
-                                <ErrorMessage name='password' component="div" />
-                            )
-                        }
-
-                        <label htmlFor="confirm">Password</label>
-                        <Field
-                            id="confirm"
-                            name="confirm"
-                            placeholder="Confirm password"
-                            type="password"
-                        />
-                        {
-                            errors.confirm && touched.confirm &&
-                            (
-                                <ErrorMessage name='confirm' component="div" />
-                            )
-                        }
-                        <button type="submit">Registrar cuenta</button>
-                        <h4>Ya tienes una cuenta?...<a href="/login">Loguearme</a></h4>
+                        <button type="submit" className="boton">Registrarme </button>
+                        <h4>Ya tienes una cuenta?...<a href="/login" className="loginLink">Logueate</a></h4>
                         {isSubmitting ? (<p>Registrandote...</p>) : null}
 
                     </Form>

@@ -28,8 +28,7 @@ const UserProfile = () => {
             }else {
                 navigate("/login")
             }
-        }).catch((error) => {
-            console.log(error);
+        }).catch(() => {
             navigate("/login")
         })
 
@@ -39,6 +38,7 @@ const UserProfile = () => {
             }
         }).catch((error) => {
             console.log(error);
+            navigate("/login")
         })
     },[]);
 

@@ -2,11 +2,20 @@ import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import AuthContex from "../../context/AuthContext";
 import { getPublicaciones, refresh } from "../../services/axiosCrudServices";
+import CrearPublicacion from "../CrearPublicacion/CrearPublicacion";
 
 const InicioComponent = () => {
 
     const { token, setToken, setExpiresIn } = useContext(AuthContex);
     const [publicaciones, setPublicaciones] = useState([]);
+    const [posteo, setPosteo] = useState("");
+    const initialValues = {
+        nombre: "",
+        apellido: "",
+        telefono: "",
+        email: ""
+    }
+    const [user, setUser] = useState(initialValues);
     const navigate = useNavigate();
 
     const obtenerToken = async () => {
@@ -35,35 +44,55 @@ const InicioComponent = () => {
     useEffect(() => {
         obtenerData().then((res) => {
             if (res) {
-                const data = res.data.publicaciones
-                setPublicaciones(data)
+                const data = res.data.publicaciones;
+                setPublicaciones(data);
+                const userFind = res.data.userFind;
+                setUser(userFind);
             }
         }).catch((error) => {
             console.log(error);
         })
     }, [token]);
 
+    function handleAction(evento) {
+        setPosteo(evento);
+    }
+
     return (
 
         <div>
             {
-                publicaciones.length === 0
+                token
                     ?
-                    <div>
-                        <h2>No hay publicaciones disponibles</h2>
-                    </div>
+                    publicaciones.length === 0
+                        ?
+                        <div>
+                            <h2>No hay publicaciones disponibles</h2>
+                            <CrearPublicacion token={token} />
+                        </div>
+                        :
+                        <div>
+                            <CrearPublicacion token={token} onAction={handleAction} />
+                            {
+                                publicaciones.map((publicacion, index) => (
+                                    <div key={index}>
+                                        <p>{user.nombre} {user.apellido}</p>
+                                        <p>{publicacion.posteo}</p>
+                                    </div>
+                                ))
+                            }
+                            <div>
+                                <button onClick={() => navigate("/profile")}>
+                                    Perfil
+                                </button>
+                            </div>
+                        </div>
                     :
                     <div>
-                        {
-                            publicaciones.map((publicacion, index) => (
-                                <div key={index}>
-                                    <p>{publicacion.posteo}</p>
-                                </div>
-                            ))
-                        }
+                        <h2>No estas logueado</h2>
                         <div>
-                            <button onClick={() => navigate("/profile")}>
-                                Perfil
+                            <button onClick={() => navigate("/login")}>
+                                Login
                             </button>
                         </div>
                     </div>

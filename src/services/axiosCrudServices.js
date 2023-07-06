@@ -75,8 +75,6 @@ export const logout = async () => {
             withCredentials: true,
             credentials: "include",
         });
-    window.location.reload();
-    console.log(response);
     return response;
 };
 
@@ -86,6 +84,22 @@ export const infoUser = async (token) => {
         'Authorization': `Bearer ${token}`
     };
     const response = await axios.get("http://localhost:8080/api/v1/auth/profile", {
+        headers: headers
+    }).then((res) => {
+        return res
+    }).catch((error) => {
+        return error
+    })
+    return response
+};
+
+export const crearPublicacion = async (posteo, token) => {
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+    };
+    let body = posteo
+    const response = await axios.post("http://localhost:8080/publicaciones", body, {
         headers: headers
     }).then((res) => {
         return res
