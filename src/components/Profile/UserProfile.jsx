@@ -28,8 +28,8 @@ const UserProfile = () => {
             }else {
                 navigate("/login")
             }
-        }).catch(() => {
-            navigate("/login")
+        }).catch((error) => {
+            if(error) navigate("/login")
         })
 
         obtenerUser().then((res) => {
@@ -37,8 +37,7 @@ const UserProfile = () => {
                 setUser(res.data.user)
             }
         }).catch((error) => {
-            console.log(error);
-            navigate("/login")
+            if(error) navigate("/login")
         })
     },[]);
 

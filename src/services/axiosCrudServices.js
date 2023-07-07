@@ -12,7 +12,6 @@ export const login = async (email, password, repassword) => {
         const response = await axios.post("http://localhost:8080/api/v1/auth/login", body, {
             withCredentials: true
         });
-        console.log(response.data);
         return response;
     } catch (error) {
         if (error.request.status === 400) {

@@ -9,13 +9,7 @@ const InicioComponent = () => {
     const { token, setToken, setExpiresIn } = useContext(AuthContex);
     const [publicaciones, setPublicaciones] = useState([]);
     const [posteo, setPosteo] = useState("");
-    const initialValues = {
-        nombre: "",
-        apellido: "",
-        telefono: "",
-        email: ""
-    }
-    const [user, setUser] = useState(initialValues);
+
     const navigate = useNavigate();
 
     const obtenerToken = async () => {
@@ -46,8 +40,6 @@ const InicioComponent = () => {
             if (res) {
                 const data = res.data.publicaciones;
                 setPublicaciones(data);
-                const userFind = res.data.userFind;
-                setUser(userFind);
             }
         }).catch((error) => {
             console.log(error);
@@ -76,7 +68,7 @@ const InicioComponent = () => {
                             {
                                 publicaciones.map((publicacion, index) => (
                                     <div key={index}>
-                                        <p>{user.nombre} {user.apellido}</p>
+                                        <p>{publicacion.user}</p>
                                         <p>{publicacion.posteo}</p>
                                     </div>
                                 ))
